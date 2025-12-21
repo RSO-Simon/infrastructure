@@ -38,3 +38,10 @@ spec:
               value: "postgres"
             - name: SPRING_DATASOURCE_PASSWORD
               value: "pass"
+          readinessProbe:
+            httpGet:
+              path: /swagger-ui/index.html
+              port: 8081
+            initialDelaySeconds: 15
+            periodSeconds: 5
+
