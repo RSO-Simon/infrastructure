@@ -24,13 +24,13 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Show cluster context
-        shell: cmd
+        shell: powershell
         run: |
           kubectl config current-context
           kubectl get ns
 
       - name: Apply manifests
-        shell: cmd
+        shell: powershell
         run: |
           kubectl apply -f k8s/00-namespace.yaml
           kubectl apply -f k8s/10-postgres.yaml
@@ -38,17 +38,13 @@ jobs:
           kubectl apply -f k8s/30-component-service.yaml
 
       - name: Update image and rollout
-        shell: cmd
+        shell: powershell
         run: |
-          set "svc=ship-service"
-          set "tag=latest"
-          set "owner=%GITHUB_REPOSITORY_OWNER%"
-          for %%A in ("%owner%") do set "owner=%%~A"
-          set "owner=%owner%"
-          rem owner lowercasing is optional if your org is already lowercase; keep it simple first
-          
-          set "image=ghcr.io/%owner%/%svc%:%tag%"
-          echo Deploying %svc% -> %image%
-          
-          kubectl -n rso set image deployment/%svc% %svc%=%image%
-          kubectl -n rso rollout status deployment/%svc% --timeout=180s
+          $svc = "${{ inputs.service }}"
+          $tag = "${{ inputs.tag }}"
+          $owner = "${env:GITHUB_REPOSITORY_OWNER}".ToLower()
+          $image = "ghcr.io/$owner/$svc:$tag"
+
+          Write-Host "Deploying $svc -> $image"
+          kubectl -n rso set image deployment/$svc $svc=$image
+          kubectl -n rso rollout status deployment/$svc --timeout=180s
