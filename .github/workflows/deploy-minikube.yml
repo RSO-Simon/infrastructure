@@ -1,0 +1,50 @@
+name: Deploy to minikube
+
+on:
+  workflow_dispatch:
+    inputs:
+      service:
+        description: "Which service to deploy"
+        required: true
+        type: choice
+        options:
+          - ship-service
+          - component-service
+      tag:
+        description: "Image tag to deploy (e.g. latest, v1.0.0, or a sha)"
+        required: true
+        default: latest
+
+jobs:
+  deploy:
+    runs-on: [self-hosted]
+
+    steps:
+      - name: Checkout infrastructure repo
+        uses: actions/checkout@v4
+
+      - name: Show cluster context
+        shell: powershell
+        run: |
+          kubectl config current-context
+          kubectl get ns
+
+      - name: Apply manifests
+        shell: powershell
+        run: |
+          kubectl apply -f k8s/00-namespace.yaml
+          kubectl apply -f k8s/10-postgres.yaml
+          kubectl apply -f k8s/20-ship-service.yaml
+          kubectl apply -f k8s/30-component-service.yaml
+
+      - name: Update image and rollout
+        shell: powershell
+        run: |
+          $svc = "${{ inputs.service }}"
+          $tag = "${{ inputs.tag }}"
+          $owner = "${env:GITHUB_REPOSITORY_OWNER}".ToLower()
+          $image = "ghcr.io/$owner/$svc:$tag"
+
+          Write-Host "Deploying $svc -> $image"
+          kubectl -n rso set image deployment/$svc $svc=$image
+          kubectl -n rso rollout status deployment/$svc --timeout=180s
