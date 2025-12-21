@@ -43,7 +43,8 @@ jobs:
           $svc = "${{ inputs.service }}"
           $tag = "${{ inputs.tag }}"
           $owner = "${env:GITHUB_REPOSITORY_OWNER}".ToLower()
-          $image = "ghcr.io/$owner/$svc:$tag"
+          $image = "ghcr.io/${owner}/${svc}:${tag}"
+
 
           Write-Host "Deploying $svc -> $image"
           kubectl -n rso set image deployment/$svc $svc=$image
