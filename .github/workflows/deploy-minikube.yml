@@ -40,11 +40,15 @@ jobs:
       - name: Update image and rollout
         shell: cmd
         run: |
-          $svc = "${{ inputs.service }}"
-          $tag = "${{ inputs.tag }}"
-          $owner = "${env:GITHUB_REPOSITORY_OWNER}".ToLower()
-          $image = "ghcr.io/$owner/$svc:$tag"
-
-          Write-Host "Deploying $svc -> $image"
-          kubectl -n rso set image deployment/$svc $svc=$image
-          kubectl -n rso rollout status deployment/$svc --timeout=180s
+          set "svc=ship-service"
+          set "tag=latest"
+          set "owner=%GITHUB_REPOSITORY_OWNER%"
+          for %%A in ("%owner%") do set "owner=%%~A"
+          set "owner=%owner%"
+          rem owner lowercasing is optional if your org is already lowercase; keep it simple first
+          
+          set "image=ghcr.io/%owner%/%svc%:%tag%"
+          echo Deploying %svc% -> %image%
+          
+          kubectl -n rso set image deployment/%svc% %svc%=%image%
+          kubectl -n rso rollout status deployment/%svc% --timeout=180s
