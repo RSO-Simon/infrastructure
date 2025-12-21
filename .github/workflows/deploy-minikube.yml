@@ -17,7 +17,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: [self-hosted]
+    runs-on: [self-hosted, windows, X64, minikube]
 
     steps:
       - name: Checkout infrastructure repo
