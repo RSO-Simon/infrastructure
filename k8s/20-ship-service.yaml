@@ -25,6 +25,8 @@ spec:
       labels:
         app: ship-service
     spec:
+      imagePullSecrets:
+        - name: ghcr-pull
       containers:
         - name: ship-service
           image: ship-service:latest
