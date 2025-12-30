@@ -26,10 +26,10 @@ spec:
         app: ship-service
     spec:
       imagePullSecrets:
-        - name: ghcr-pull
+        - name: ghcr-secret
       containers:
         - name: ship-service
-          image: ship-service:latest
+          image: ghcr.io/rso-simon/ship-service:latest
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8081
@@ -40,6 +40,13 @@ spec:
               value: "postgres"
             - name: SPRING_DATASOURCE_PASSWORD
               value: "pass"
+            - name: SERVER_FORWARD_HEADERS_STRATEGY
+              value: native
+            - name: SPRINGDOC_SWAGGER_UI_CONFIG_URL
+              value: /ship/v3/api-docs/swagger-config
+
+
+
           readinessProbe:
             httpGet:
               path: /swagger-ui/index.html
@@ -47,3 +54,24 @@ spec:
             initialDelaySeconds: 15
             periodSeconds: 5
 
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ship-service
+  namespace: rso
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: "/$2"
+spec:
+  ingressClassName: nginx
+  rules:
+    - http:
+        paths:
+          - path: /ship(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: ship-service
+                port:
+                  number: 8081

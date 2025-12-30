@@ -49,9 +49,12 @@ spec:
               value: "pass"
             - name: POSTGRES_DB
               value: "appdb"
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+
           volumeMounts:
             - name: pgdata
-              mountPath: /var/lib/postgresql/data
+              mountPath: /var/lib/postgresql
       volumes:
         - name: pgdata
           persistentVolumeClaim:
