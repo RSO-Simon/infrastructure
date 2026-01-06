@@ -1,4 +1,4 @@
-name: deploy-ship-service
+name: deploy-component-service
 
 on:
   workflow_dispatch:
