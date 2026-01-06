@@ -7,8 +7,7 @@ on:
         description: "ship-service image tag (commit SHA)"
         required: true
       componentImageTag:
-        description: "component-service image tag (commit SHA)"
-        required: true
+        required: false
 
 
 permissions:
@@ -38,6 +37,8 @@ jobs:
 
       - run: helm upgrade --install ship-service ./helm/ship-service --namespace rso --set image.tag=${{ inputs.shipImageTag }}
 
-      - run: helm upgrade --install component-service ./helm/component-service --namespace rso --set image.tag=${{ inputs.componentImageTag }}
+      - name: Deploy component-service
+        if: ${{ inputs.componentImageTag != '' && inputs.componentImageTag != 'skip' }}
+        run: helm upgrade --install component-service ./helm/component-service --namespace rso --set image.tag=${{ inputs.componentImageTag }}
 
       - run: kubectl -n rso get deploy,svc,pods
