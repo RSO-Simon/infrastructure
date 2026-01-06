@@ -26,6 +26,6 @@ jobs:
 
       - run: kubectl create namespace rso --dry-run=client -o yaml | kubectl apply -f -
 
-      - run: kubectl apply -n rso -f .\k8s\10-postgres.yaml
+      - run: kubectl apply -n rso -f ./k8s/10-postgres.yaml
 
       - run: kubectl -n rso get deploy,svc,pods
