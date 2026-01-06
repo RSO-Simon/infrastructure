@@ -6,6 +6,10 @@ on:
       shipImageTag:
         description: "ship-service image tag (commit SHA)"
         required: true
+      componentImageTag:
+        description: "component-service image tag (commit SHA)"
+        required: true
+
 
 permissions:
   id-token: write
@@ -33,5 +37,7 @@ jobs:
       - run: helm upgrade --install postgres ./helm/postgres --namespace rso --create-namespace
 
       - run: helm upgrade --install ship-service ./helm/ship-service --namespace rso --set image.tag=${{ inputs.shipImageTag }}
+
+      - run: helm upgrade --install component-service ./helm/component-service --namespace rso --set image.tag=${{ inputs.componentImageTag }}
 
       - run: kubectl -n rso get deploy,svc,pods
