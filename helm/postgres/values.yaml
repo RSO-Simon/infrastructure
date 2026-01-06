@@ -1,0 +1,11 @@
+image:
+  repository: postgres
+  tag: "16"
+
+service:
+  port: 5432
+
+auth:
+  username: postgres
+  password: pass
+  database: appdb
