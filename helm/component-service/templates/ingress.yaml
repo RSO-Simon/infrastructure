@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: component-service
+  namespace: rso
+spec:
+  selector:
+    app: component-service
+  ports:
+    - port: 8082
+      targetPort: 8082
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: component-service
+  namespace: rso
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: component-service
+  template:
+    metadata:
+      labels:
+        app: component-service
+    spec:
+      containers:
+        - name: component-service
+          image: component-service:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8082
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://postgres:5432/appdb
+            - name: SPRING_DATASOURCE_USERNAME
+              value: "postgres"
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: "pass"
