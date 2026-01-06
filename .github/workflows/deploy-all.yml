@@ -6,10 +6,10 @@ on:
       shipImageTag:
         description: "ship-service image tag (commit SHA)"
         required: true
-    componentImageTag:
-      required: false
-  repository_dispatch:
-    types: [deploy-all]
+      componentImageTag:
+        description: "component-service image tag (commit SHA)"
+        required: true
+
 
 permissions:
   id-token: write
@@ -36,22 +36,8 @@ jobs:
 
       - run: helm upgrade --install postgres ./helm/postgres --namespace rso --create-namespace
 
-      - name: Deploy ship-service
-        env:
-          TAG_FROM_MANUAL: ${{ inputs.shipImageTag }}
-          TAG_FROM_DISPATCH: ${{ github.event.client_payload.shipImageTag }}
-        run: |
-          TAG="${TAG_FROM_MANUAL:-$TAG_FROM_DISPATCH}"
-          helm upgrade --install ship-service ./helm/ship-service --namespace rso --set image.tag="$TAG"
+      - run: helm upgrade --install ship-service ./helm/ship-service --namespace rso --set image.tag=${{ inputs.shipImageTag }}
 
-      - name: Deploy component-service
-        env:
-          TAG_FROM_MANUAL: ${{ inputs.componentImageTag }}
-          TAG_FROM_DISPATCH: ${{ github.event.client_payload.componentImageTag }}
-        run: |
-          TAG="${TAG_FROM_MANUAL:-$TAG_FROM_DISPATCH}"
-          if [ -n "$TAG" ] && [ "$TAG" != "skip" ]; then
-            helm upgrade --install component-service ./helm/component-service --namespace rso --set image.tag="$TAG"
-          fi
+      - run: helm upgrade --install component-service ./helm/component-service --namespace rso --set image.tag=${{ inputs.componentImageTag }}
 
       - run: kubectl -n rso get deploy,svc,pods
