@@ -1,0 +1,23 @@
+namespace: rso
+
+image:
+  repository: ghcr.io/rso-simon/ship-service
+  tag: latest
+  pullPolicy: IfNotPresent
+  pullSecret: ghcr-secret
+
+service:
+  port: 8081
+
+env:
+  SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/appdb
+  SPRING_DATASOURCE_USERNAME: postgres
+  SPRING_DATASOURCE_PASSWORD: pass
+  SERVER_FORWARD_HEADERS_STRATEGY: native
+  SPRINGDOC_SWAGGER_UI_CONFIG_URL: /ship/v3/api-docs/swagger-config
+
+ingress:
+  enabled: true
+  className: nginx
+  path: /ship(/|$)(.*)
+  rewriteTarget: "/$2"
