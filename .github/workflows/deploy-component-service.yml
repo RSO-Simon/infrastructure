@@ -34,7 +34,7 @@ jobs:
 
       - run: helm upgrade --install postgres ./helm/postgres --namespace rso --create-namespace
 
-      - name: Deploy ship-service
+      - name: Deploy component-service
         env:
           TAG_FROM_MANUAL: ${{ inputs.imageTag }}
           TAG_FROM_DISPATCH: ${{ github.event.client_payload.imageTag }}
