@@ -29,6 +29,8 @@ jobs:
           cluster-name: ${{ secrets.AKS_CLUSTER_NAME }}
 
       - uses: azure/setup-helm@v4
+      - run: ls -la ./helm/ship-service
+      - run: cat ./helm/ship-service/Chart.yaml
 
       - run: helm upgrade --install ship-service ./helm/ship-service --namespace rso --create-namespace --set image.tag=${{ inputs.imageTag }}
 
