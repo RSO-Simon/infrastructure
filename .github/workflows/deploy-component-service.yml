@@ -7,7 +7,7 @@ on:
         description: "component-service image tag (commit SHA)"
         required: true
   repository_dispatch:
-    types: [deploy-ship-service]
+    types: [deploy-component-service]
 
 permissions:
   id-token: write
