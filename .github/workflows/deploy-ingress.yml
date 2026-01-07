@@ -1,4 +1,4 @@
-name: deploy-ingress
+name: Deploy Ingress
 
 on:
   workflow_dispatch:
@@ -35,12 +35,14 @@ jobs:
       - name: Setup Helm
         uses: azure/setup-helm@v4
 
-      - name: Ensure namespace exists
+      - name: Ensure rso namespace exists
         run: |
           kubectl create namespace rso --dry-run=client -o yaml | kubectl apply -f -
 
-      - name: Deploy ingress rules (Helm)
+      - name: Deploy ingress (Helm)
         run: |
           helm upgrade --install rso-ingress ./helm/ingress --namespace rso
 
-      - name: Show ingress
+      - name: Show ingress status
+        run: |
+          kubectl -n rso get ingress -o wide
