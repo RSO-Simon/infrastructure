@@ -3,11 +3,11 @@ host: ""
 
 paths:
   ships:
-    prefix: /api
+    prefix: /
     serviceName: ship-service
     servicePort: 8081
 
   components:
-    prefix: /api
+    prefix: /
     serviceName: component-service
     servicePort: 8082
