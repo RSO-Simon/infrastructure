@@ -2,10 +2,6 @@ name: deploy-ingress
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - "helm/ingress/**"
-      - ".github/workflows/deploy-ingress.yml"
 
 permissions:
   id-token: write
