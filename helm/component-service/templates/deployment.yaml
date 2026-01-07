@@ -27,3 +27,6 @@ spec:
               value: {{ .Values.env.SPRING_DATASOURCE_USERNAME | quote }}
             - name: SPRING_DATASOURCE_PASSWORD
               value: {{ .Values.env.SPRING_DATASOURCE_PASSWORD | quote }}
+            - name: SERVER_SERVLET_CONTEXT_PATH
+              value: "/api/components"
+

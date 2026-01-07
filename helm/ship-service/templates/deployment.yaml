@@ -26,3 +26,6 @@ spec:
             - name: {{ $k }}
               value: "{{ $v }}"
 {{- end }}
+            - name: SERVER_SERVLET_CONTEXT_PATH
+              value: "/api/ships"
+
