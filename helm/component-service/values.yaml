@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: ghcr.io/RSO-Simon/component-service
+  repository: ghcr.io/rso-simon/component-service
   tag: ""
   pullPolicy: IfNotPresent
 
