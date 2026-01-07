@@ -27,3 +27,4 @@ spec:
                 name: {{ .Values.paths.components.serviceName }}
                 port:
                   number: {{ .Values.paths.components.servicePort }}
+
