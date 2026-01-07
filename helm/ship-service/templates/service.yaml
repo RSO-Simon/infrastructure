@@ -4,7 +4,8 @@ metadata:
   name: ship-service
 spec:
   selector:
-    app: ship-service
+    app.kubernetes.io/name: ship-service
+    app.kubernetes.io/instance: ship-service
   ports:
     - port: {{ .Values.service.port }}
       targetPort: {{ .Values.service.port }}
