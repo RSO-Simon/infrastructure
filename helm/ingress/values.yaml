@@ -3,7 +3,7 @@ host: ""
 
 paths:
   ships:
-    prefix: /
+    prefix: /api/ships
     serviceName: ship-service
     servicePort: 8081
 
