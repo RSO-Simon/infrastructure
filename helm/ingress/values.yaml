@@ -1,0 +1,16 @@
+ingressClassName: nginx
+
+# Leave empty to accept all hosts (works via raw IP).
+# Later you can set a real host (e.g., <ip>.nip.io) if you want.
+host: ""
+
+paths:
+  ship:
+    prefix: /api/ships
+    serviceName: ship-service
+    servicePort: 8081
+
+  component:
+    prefix: /api/components
+    serviceName: component-service
+    servicePort: 8082
