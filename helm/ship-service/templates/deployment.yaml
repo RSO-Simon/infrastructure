@@ -18,8 +18,10 @@ spec:
         app.kubernetes.io/name: {{ .Chart.Name }}
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
+      {{- if .Values.image.pullSecret }}
       imagePullSecrets:
-      - name: {{ .Values.image.pullSecret }}
+        - name: {{ .Values.image.pullSecret }}
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -33,3 +35,5 @@ spec:
             - name: {{ $k }}
               value: {{ $v | quote }}
             {{- end }}
+          resources:
+            {{- toYaml (.Values.resources | default dict) | nindent 12 }}

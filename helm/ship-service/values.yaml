@@ -10,9 +10,6 @@ service:
   type: ClusterIP
   port: 8081
 
-# Canonical external base path for this service
-contextPath: /api/ships
-
 env:
   SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/appdb
   SPRING_DATASOURCE_USERNAME: postgres
@@ -20,8 +17,5 @@ env:
   SERVER_FORWARD_HEADERS_STRATEGY: native
   SERVER_SERVLET_CONTEXT_PATH: /api/ships
 
-ingress:
-  enabled: false
-  className: nginx
-  host: ""
-  pathPrefix: /api/ships
+
+resources: {}
