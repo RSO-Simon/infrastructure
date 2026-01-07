@@ -1,4 +1,4 @@
-name: Deploy Ingress
+name: deploy-ingress
 
 on:
   workflow_dispatch:
