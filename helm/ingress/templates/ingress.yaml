@@ -3,28 +3,24 @@ kind: Ingress
 metadata:
   name: rso-services
   namespace: rso
-  annotations:
-    nginx.ingress.kubernetes.io/use-regex: "true"
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
   ingressClassName: {{ .Values.ingressClassName }}
   rules:
     - {{- if .Values.host }}host: {{ .Values.host | quote }}{{- end }}
       http:
         paths:
-          - path: {{ .Values.paths.ships.prefix }}(/|$)(.*)
-            pathType: ImplementationSpecific
+          - path: {{ .Values.paths.ships.prefix }}
+            pathType: Prefix
             backend:
               service:
                 name: {{ .Values.paths.ships.serviceName }}
                 port:
                   number: {{ .Values.paths.ships.servicePort }}
 
-          - path: {{ .Values.paths.components.prefix }}(/|$)(.*)
-            pathType: ImplementationSpecific
+          - path: {{ .Values.paths.components.prefix }}
+            pathType: Prefix
             backend:
               service:
                 name: {{ .Values.paths.components.serviceName }}
                 port:
                   number: {{ .Values.paths.components.servicePort }}
-

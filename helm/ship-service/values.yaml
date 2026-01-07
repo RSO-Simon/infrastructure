@@ -1,23 +1,27 @@
-namespace: rso
+replicaCount: 1
 
 image:
-  repository: ghcr.io/rso-simon/ship-service
-  tag: latest
+  repository: ghcr.io/RSO-Simon/ship-service
+  tag: ""
   pullPolicy: IfNotPresent
   pullSecret: ghcr-secret
 
 service:
+  type: ClusterIP
   port: 8081
+
+# Canonical external base path for this service
+contextPath: /api/ships
 
 env:
   SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/appdb
   SPRING_DATASOURCE_USERNAME: postgres
   SPRING_DATASOURCE_PASSWORD: pass
   SERVER_FORWARD_HEADERS_STRATEGY: native
-  SPRINGDOC_SWAGGER_UI_CONFIG_URL: /ship/v3/api-docs/swagger-config
+  SERVER_SERVLET_CONTEXT_PATH: /api/ships
 
 ingress:
-  enabled: true
+  enabled: false
   className: nginx
-  path: /ship(/|$)(.*)
-  rewriteTarget: "/$2"
+  host: ""
+  pathPrefix: /api/ships
