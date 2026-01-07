@@ -8,6 +8,6 @@ paths:
     servicePort: 8081
 
   components:
-    prefix: /api/components
+    prefix: /api
     serviceName: component-service
     servicePort: 8082
