@@ -22,6 +22,9 @@ probes:
   readinessPath: /api/components/actuator/health/readiness
 
 db:
+  host: postgres
+  port: 5432
+  name: components
   username: postgres
   password: pass
 
