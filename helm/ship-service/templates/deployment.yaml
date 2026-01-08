@@ -30,6 +30,11 @@ spec:
             - name: http
               containerPort: {{ .Values.service.port }}
               protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: ship-service-config
+            - secretRef:
+                name: ship-service-db
           env:
             - name: SPRING_DATASOURCE_URL
               value: jdbc:postgresql://$(DB_HOST):$(DB_PORT)/$(DB_NAME)
