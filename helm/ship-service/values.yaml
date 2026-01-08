@@ -17,5 +17,8 @@ env:
   SERVER_FORWARD_HEADERS_STRATEGY: native
   SERVER_SERVLET_CONTEXT_PATH: /api/ships
 
+probes:
+  livenessPath: /api/ships/actuator/health/liveness
+  readinessPath: /api/ships/actuator/health/readiness
 
 resources: {}

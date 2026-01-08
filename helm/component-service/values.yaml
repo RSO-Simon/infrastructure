@@ -17,4 +17,8 @@ env:
   SERVER_FORWARD_HEADERS_STRATEGY: native
   SERVER_SERVLET_CONTEXT_PATH: /api/components
 
+probes:
+  livenessPath: /api/components/actuator/health/liveness
+  readinessPath: /api/components/actuator/health/readiness
+
 resources: {}
