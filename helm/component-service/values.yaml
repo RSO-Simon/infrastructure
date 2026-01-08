@@ -28,5 +28,7 @@ db:
   username: postgres
   password: pass
 
+server:
+  contextPath: /api/components
 
 resources: {}
