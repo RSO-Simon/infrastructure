@@ -10,15 +10,18 @@ service:
   type: ClusterIP
   port: 8081
 
-env:
-  SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/appdb
-  SPRING_DATASOURCE_USERNAME: postgres
-  SPRING_DATASOURCE_PASSWORD: pass
-  SERVER_FORWARD_HEADERS_STRATEGY: native
-  SERVER_SERVLET_CONTEXT_PATH: /api/ships
 
 probes:
   livenessPath: /api/ships/actuator/health/liveness
   readinessPath: /api/ships/actuator/health/readiness
+db:
+  host: postgres
+  port: 5432
+  name: appdb
+  username: postgres
+  password: pass
+
+server:
+  contextPath: /api/components
 
 resources: {}
