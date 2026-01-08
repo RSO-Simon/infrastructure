@@ -21,4 +21,9 @@ probes:
   livenessPath: /api/components/actuator/health/liveness
   readinessPath: /api/components/actuator/health/readiness
 
+db:
+  username: postgres
+  password: pass
+
+
 resources: {}
