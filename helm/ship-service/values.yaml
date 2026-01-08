@@ -14,6 +14,7 @@ service:
 probes:
   livenessPath: /api/ships/actuator/health/liveness
   readinessPath: /api/ships/actuator/health/readiness
+
 db:
   host: postgres
   port: 5432
@@ -22,6 +23,6 @@ db:
   password: pass
 
 server:
-  contextPath: /api/components
+  contextPath: /api/ships
 
 resources: {}
