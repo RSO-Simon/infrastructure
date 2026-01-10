@@ -32,3 +32,11 @@ spec:
                 name: {{ .Values.paths.auth.serviceName }}
                 port:
                   number: {{ .Values.paths.auth.servicePort }}
+
+            - path: {{ .Values.paths.frontend.prefix }}
+                pathType: Prefix
+                backend:
+                  service:
+                    name: {{ .Values.paths.frontend.serviceName }}
+                    port:
+                      number: {{ .Values.paths.frontend.servicePort }}

@@ -16,3 +16,8 @@ paths:
     prefix: /api/auth
     serviceName: auth-service
     servicePort: 8083
+
+  frontend:
+    prefix: /
+    serviceName: frontend
+    servicePort: 80
