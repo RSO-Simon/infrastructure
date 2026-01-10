@@ -11,8 +11,8 @@ service:
   port: 8083
 
 probes:
-  livenessPath: /api/components/actuator/health/liveness
-  readinessPath: /api/components/actuator/health/readiness
+  livenessPath: /api/auth/actuator/health/liveness
+  readinessPath: /api/auth/actuator/health/readiness
 
 db:
   host: postgres
