@@ -1,0 +1,43 @@
+name: deploy-frontend
+
+on:
+  workflow_dispatch:
+    inputs:
+      imageTag:
+        description: "frontend image tag"
+        required: true
+  repository_dispatch:
+    types: [deploy-frontend]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: azure/setup-kubectl@v4
+
+
+      - uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - uses: azure/aks-set-context@v4
+        with:
+          resource-group: ${{ secrets.AKS_RESOURCE_GROUP }}
+          cluster-name: ${{ secrets.AKS_CLUSTER_NAME }}
+
+
+      - uses: azure/setup-helm@v4
+
+      - name: Deploy frontend
+        env:
+          TAG_FROM_MANUAL: ${{ inputs.imageTag }}
+          TAG_FROM_DISPATCH: ${{ github.event.client_payload.imageTag }}
+        run: |
+          TAG="${TAG_FROM_MANUAL:-$TAG_FROM_DISPATCH}"
+          echo "Deploying frontend tag: $TAG"
+          helm upgrade --install frontend ./helm/frontend --namespace rso --set image.tag="$TAG"
+      

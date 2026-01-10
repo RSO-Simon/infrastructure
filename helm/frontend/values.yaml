@@ -1,0 +1,10 @@
+replicaCount: 1
+
+image:
+  repository: ghcr.io/rso-simon/frontend
+  tag: ""
+  pullPolicy: IfNotPresent
+  pullSecret: ghcr-secret
+
+service:
+  port: 80
