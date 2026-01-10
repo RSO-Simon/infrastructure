@@ -11,3 +11,8 @@ paths:
     prefix: /api/components
     serviceName: component-service
     servicePort: 8082
+
+  auth:
+    prefix: /api/auth
+    serviceName: auth-service
+    servicePort: 8083

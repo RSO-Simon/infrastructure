@@ -24,3 +24,11 @@ spec:
                 name: {{ .Values.paths.components.serviceName }}
                 port:
                   number: {{ .Values.paths.components.servicePort }}
+
+          - path: {{ .Values.paths.auth.prefix }}
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Values.paths.auth.serviceName }}
+                port:
+                  number: {{ .Values.paths.auth.servicePort }}

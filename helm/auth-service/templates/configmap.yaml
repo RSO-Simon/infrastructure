@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: auth-service-config
+data:
+  SERVER_PORT: {{ .Values.service.port | quote }}
+  SERVER_SERVLET_CONTEXT_PATH: {{ .Values.server.contextPath | quote }}
+  DB_HOST: {{ .Values.db.host | quote }}
+  DB_PORT: {{ .Values.db.port | quote }}
+  DB_NAME: {{ .Values.db.name | quote }}
+  APP_JWT_TLL_SECONDS: {{.Values.jwt.tll | quote}}
+

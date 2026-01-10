@@ -10,13 +10,6 @@ service:
   type: ClusterIP
   port: 8082
 
-#env:
-#  SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/appdb
-#  SPRING_DATASOURCE_USERNAME: postgres
-#  SPRING_DATASOURCE_PASSWORD: pass
-#  SERVER_FORWARD_HEADERS_STRATEGY: native
-#  SERVER_SERVLET_CONTEXT_PATH: /api/components
-
 probes:
   livenessPath: /api/components/actuator/health/liveness
   readinessPath: /api/components/actuator/health/readiness
@@ -30,5 +23,8 @@ db:
 
 server:
   contextPath: /api/components
+
+jwt:
+  shared: 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
 
 resources: {}
