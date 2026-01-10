@@ -9,6 +9,11 @@ on:
   repository_dispatch:
     types: [deploy-frontend]
 
+permissions:
+  id-token: write
+  contents: read
+
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
