@@ -1,0 +1,46 @@
+name: deploy-auth-service
+
+on:
+  workflow_dispatch:
+    inputs:
+      imageTag:
+        description: "auth-service image tag (commit SHA)"
+        required: true
+  repository_dispatch:
+    types: [deploy-auth-service]
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - uses: azure/aks-set-context@v4
+        with:
+          resource-group: ${{ secrets.AKS_RESOURCE_GROUP }}
+          cluster-name: ${{ secrets.AKS_CLUSTER_NAME }}
+
+      - uses: azure/setup-helm@v4
+
+      - run: helm upgrade --install postgres ./helm/postgres --namespace rso --create-namespace
+
+      - name: Deploy auth-service
+        env:
+          TAG_FROM_MANUAL: ${{ inputs.imageTag }}
+          TAG_FROM_DISPATCH: ${{ github.event.client_payload.imageTag }}
+        run: |
+          TAG="${TAG_FROM_MANUAL:-$TAG_FROM_DISPATCH}"
+          echo "Deploying auth-service tag: $TAG"
+          helm upgrade --install auth-service ./helm/auth-service --namespace rso --set image.tag="$TAG"
+
+      - run: kubectl -n rso get deploy,svc,pods
